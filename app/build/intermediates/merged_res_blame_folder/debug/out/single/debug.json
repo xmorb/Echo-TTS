@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "com.echotts.app-merged_res-4:/layout_activity_main.xml.flat",
+        "source": "com.echotts.app-main-6:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.echotts.app-main-6:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/menu_main_menu.xml.flat",
+        "source": "com.echotts.app-main-6:/menu/main_menu.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.echotts.app-main-6:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/drawable_spinner_background.xml.flat",
+        "source": "com.echotts.app-main-6:/drawable/spinner_background.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/layout_activity_login.xml.flat",
+        "source": "com.echotts.app-main-6:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.echotts.app-main-6:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.echotts.app-main-6:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.echotts.app-merged_res-4:/xml_network_security_config.xml.flat",
+        "source": "com.echotts.app-main-6:/xml/network_security_config.xml"
+    }
+]

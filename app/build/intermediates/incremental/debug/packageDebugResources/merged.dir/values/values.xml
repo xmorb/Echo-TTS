@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="alexa_blue">#00CAFF</color>
+    <color name="alexa_blue_dark">#00A8D4</color>
+    <color name="amazon_orange">#FF9900</color>
+    <color name="amazon_orange_dark">#E88A00</color>
+    <color name="background">#F5F5F5</color>
+    <color name="black">#000000</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="white">#FFFFFF</color>
+    <string name="app_name">Echo TTS</string>
+    <string name="clear">Clear</string>
+    <string name="login_title">Sign in to Amazon</string>
+    <string name="logout">Sign out</string>
+    <string name="message_label">Message</string>
+    <string name="no_devices_found">No Echo devices found</string>
+    <string name="refresh">Refresh</string>
+    <string name="refresh_devices">Refresh devices</string>
+    <string name="select_device">Echo Device</string>
+    <string name="send_to_all">Speak on All Devices</string>
+    <string name="send_to_device">Speak on Selected Device</string>
+    <string name="text_hint">Type what Alexa should say…</string>
+    <style name="Theme.EchoTTS" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/amazon_orange</item>
+        <item name="colorPrimaryVariant">@color/amazon_orange_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/alexa_blue</item>
+        <item name="colorSecondaryVariant">@color/alexa_blue_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@color/amazon_orange_dark</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

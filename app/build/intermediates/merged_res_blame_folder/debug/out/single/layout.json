@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.echotts.app-mergeDebugResources-3:/layout/activity_login.xml",
+        "source": "com.echotts.app-main-6:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.echotts.app-mergeDebugResources-3:/layout/activity_main.xml",
+        "source": "com.echotts.app-main-6:/layout/activity_main.xml"
+    }
+]
