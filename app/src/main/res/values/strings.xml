@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Echo TTS</string>
+    <string name="login_title">Sign in to Amazon</string>
+    <string name="select_device">Echo Device</string>
+    <string name="message_label">Message</string>
+    <string name="text_hint">Type what Alexa should say…</string>
+    <string name="clear">Clear</string>
+    <string name="send_to_device">Speak on Selected Device</string>
+    <string name="send_to_all">Speak on All Devices</string>
+    <string name="refresh_devices">Refresh devices</string>
+    <string name="no_devices_found">No Echo devices found</string>
+    <string name="logout">Sign out</string>
+    <string name="refresh">Refresh</string>
+</resources>
