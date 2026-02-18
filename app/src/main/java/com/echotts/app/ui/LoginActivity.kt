@@ -55,7 +55,23 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                    return false // let the WebView handle all navigation
+                    val scheme = request?.url?.scheme ?: return false
+                    if (scheme != "http" && scheme != "https") {
+                        // For intent:// URLs try to launch the target app; ignore any other scheme
+                        if (scheme == "intent") {
+                            try {
+                                val intent = android.content.Intent.parseUri(
+                                    request.url.toString(),
+                                    android.content.Intent.URI_INTENT_SCHEME
+                                )
+                                startActivity(intent)
+                            } catch (_: Exception) {
+                                // App not installed or invalid intent — silently ignore
+                            }
+                        }
+                        return true // prevent WebView from trying to load non-http(s) URLs
+                    }
+                    return false // let the WebView handle http/https navigation
                 }
             }
 
@@ -65,6 +81,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn(url: String) {
+        // Ignore anything that isn't a normal https URL (e.g. intent:// leaking through)
+        if (!url.startsWith("https://")) return
+
         // After a successful login Amazon redirects to the Alexa home page
         val successIndicators = listOf(
             "alexa.amazon.com",
