@@ -22,6 +22,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var sessionManager: SessionManager
 
+    // Prevents a false-positive login detection on the initial page load.
+    // The Alexa SPA URL (alexa.amazon.com/spa/index.html) would match our
+    // success indicators immediately — we must first see the Amazon sign-in
+    // page before treating a return to that URL as successful authentication.
+    private var hasSeenSignInPage = false
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +44,12 @@ class LoginActivity : AppCompatActivity() {
         binding.webView.apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
-            settings.userAgentString =
-                "Mozilla/5.0 (Linux; Android 10; Pixel 4) " +
-                "AppleWebKit/537.36 (KHTML, like Gecko) " +
-                "Chrome/120.0.0.0 Mobile Safari/537.36"
+            // Desktop UA is required: the mobile Android UA causes Amazon's server
+            // to respond with an intent:// redirect to the native Alexa app instead
+            // of serving the web sign-in page. Desktop UA gets the full web flow,
+            // which means cookies are captured by the WebView and can be reused for
+            // subsequent API calls.
+            settings.userAgentString = DESKTOP_USER_AGENT
 
             webViewClient = object : WebViewClient() {
 
@@ -56,22 +64,10 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     val scheme = request?.url?.scheme ?: return false
-                    if (scheme != "http" && scheme != "https") {
-                        // For intent:// URLs try to launch the target app; ignore any other scheme
-                        if (scheme == "intent") {
-                            try {
-                                val intent = android.content.Intent.parseUri(
-                                    request.url.toString(),
-                                    android.content.Intent.URI_INTENT_SCHEME
-                                )
-                                startActivity(intent)
-                            } catch (_: Exception) {
-                                // App not installed or invalid intent — silently ignore
-                            }
-                        }
-                        return true // prevent WebView from trying to load non-http(s) URLs
-                    }
-                    return false // let the WebView handle http/https navigation
+                    // Block every non-http(s) URL (intent://, market://, etc.) entirely.
+                    // We must never hand off to a native app: authentication must happen
+                    // inside this WebView so that cookies are captured here.
+                    return scheme != "http" && scheme != "https"
                 }
             }
 
@@ -81,17 +77,27 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn(url: String) {
-        // Ignore anything that isn't a normal https URL (e.g. intent:// leaking through)
+        // Ignore anything that isn't a normal https URL
         if (!url.startsWith("https://")) return
 
-        // After a successful login Amazon redirects to the Alexa home page
+        // Amazon's sign-in/auth pages live under amazon.com/ap/.
+        // Record when we've passed through sign-in so we can distinguish
+        // "initial load of the Alexa SPA URL" from "redirected back after login".
+        if (url.contains("amazon.com/ap/", ignoreCase = true)) {
+            hasSeenSignInPage = true
+            return
+        }
+
+        // Don't fire until the user has actually been through the sign-in flow
+        if (!hasSeenSignInPage) return
+
         val successIndicators = listOf(
             "alexa.amazon.com",
             "/spa/index.html",
             "echo.amazon"
         )
         if (successIndicators.any { url.contains(it, ignoreCase = true) }) {
-            // Flush cookies to disk so they persist
+            // Flush cookies to disk so they persist across process restarts
             CookieManager.getInstance().flush()
             sessionManager.markLoggedIn()
             navigateToMain()
@@ -108,7 +114,13 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         // Amazon sign-in page that then redirects to the Alexa web app
-        private const val LOGIN_URL =
-            "https://alexa.amazon.com/spa/index.html"
+        private const val LOGIN_URL = "https://alexa.amazon.com/spa/index.html"
+
+        // Desktop Chrome UA. Must match AlexaRepository.USER_AGENT so all
+        // requests look like they come from the same browser session.
+        const val DESKTOP_USER_AGENT =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+            "AppleWebKit/537.36 (KHTML, like Gecko) " +
+            "Chrome/120.0.0.0 Safari/537.36"
     }
 }

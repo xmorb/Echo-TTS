@@ -132,8 +132,11 @@ class AlexaRepository(private val sessionManager: SessionManager) {
     }
 
     companion object {
+        // Must match the desktop UA used in LoginActivity's WebView so that all
+        // requests appear to come from the same browser session that captured the cookies.
         private const val USER_AGENT =
-            "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 " +
-            "(KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+            "AppleWebKit/537.36 (KHTML, like Gecko) " +
+            "Chrome/120.0.0.0 Safari/537.36"
     }
 }
